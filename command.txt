@@ -1,0 +1,3 @@
+LOAD	loadfileM.txt
+PRINT
+KRUSKAL
