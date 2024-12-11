@@ -209,22 +209,45 @@ bool Kruskal(Graph* graph, ostream* os)
 	}
 	*os << "cost: " << cost << endl;
 	*os << "===================" << endl;
-	delete[] result;
+	delete[] result; // Memory Save
 	return 0;
 }
 
 bool Dijkstra(Graph* graph, int vertex, ostream* os)
 {
-	// Length Table Init
-	int** length;
-	length = new int* [graph->getSize()];
+	int* length = new int[graph->getSize()];
+	int* parent = new int[graph->getSize()];
+	bool* visited = new bool[graph->getSize()];
+	priority_queue<pair<int, int>> pq;
 	for (int i = 0; i < graph->getSize(); i++) {
-		length[i] = new int[graph->getSize()];
-		for (int j = 0; j < graph->getSize(); j++) {
-			length[i][j] = MAX; //COST MAX!!!!!!!!!!!
+		length[i] = MAX;
+		parent[i] = -1;
+		visited = false;
+	}
+
+	pq.push({ 0, vertex });
+
+	while (!pq.empty()) {
+		// Get Now Node and Pop
+		int cost = -pq.top().first;
+		int now = pq.top().second;
+		pq.pop();
+
+		map<int, int> adj;
+		graph->getAdjacentEdges(now, &adj);
+		for (auto iter = adj.begin(); iter != adj.end(); iter++) {
+			int total = cost + iter->second;
+			if (total < length[iter->second]) {
+				length[iter->second] = total;
+				pq.push({ -total, iter->second });
+			}
 		}
 	}
 
+
+	// Memory Save
+	delete[] parent;
+	delete[] length;
 	return 0;
 }
 
