@@ -91,6 +91,7 @@ bool DFS(Graph* graph, int vertex, ostream* os)
 			if (!s[iter->first]) {
 				st.push(iter->first);
 				s[iter->first] = true;
+				break;
 			}
 		}
 		if (st.empty()) break;
