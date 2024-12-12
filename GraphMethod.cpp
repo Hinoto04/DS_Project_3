@@ -83,7 +83,6 @@ bool DFS(Graph* graph, int vertex, ostream* os)
 
 	while (true) {
 		int v = st.top();
-		st.pop();
 		*os << v;
 		map<int, int> adj;
 		graph->getEdges(v, &adj);
@@ -94,6 +93,7 @@ bool DFS(Graph* graph, int vertex, ostream* os)
 				break;
 			}
 		}
+		if(st.top() == v) st.pop();
 		if (st.empty()) break;
 		*os << " -> ";
 	}
