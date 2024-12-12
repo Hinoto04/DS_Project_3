@@ -207,7 +207,7 @@ bool Kruskal(Graph* graph, ostream* os)
 	}
 
 	// Result Print
-	*os << "===== Kruskal =====" << endl;
+	*os << "===== KRUSKAL =====" << endl;
 	for (int i = 0; i < graph->getSize(); i++) {
 		*os << "[" << i << "] ";
 		for (auto iter = result[i].begin(); iter != result[i].end(); iter++) {
