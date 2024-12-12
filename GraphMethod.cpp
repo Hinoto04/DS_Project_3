@@ -129,8 +129,9 @@ bool Kruskal(Graph* graph, ostream* os)
 
 	for (auto iter = edges.begin(); iter != edges.end(); iter++) {
 		bool needToAdd = true;
-		int Unioned = 0;
+		int Unioned = -1;
 		set<int>* target = nullptr;
+		cout << "check : " << iter->from << " --" << iter->weight << "-> " << iter->to;
 		for (int i = 0; i < sets.size(); i++) {
 			set<int>* vset = &sets[i];
 
@@ -138,6 +139,7 @@ bool Kruskal(Graph* graph, ostream* os)
 			if (vset->find(iter->from) != vset->end() && \
 				vset->find(iter->to) != vset->end()) { 
 				needToAdd = false;
+				cout << " : Reject" << endl;
 				break;
 			}
 			if (vset->find(iter->from) != vset->end()) { // One in Disjoint Set
@@ -147,12 +149,14 @@ bool Kruskal(Graph* graph, ostream* os)
 					result[iter->from].insert({ iter->to, iter->weight });
 					result[iter->to].insert({ iter->from, iter->weight });
 					cost += iter->weight;
-					Unioned = 0;
-					continue;
+					Unioned = -1;
+					cout << " : Union Accept" << endl;
+					break;
 				}
 				Unioned = iter->to;
 				target = vset;
 				needToAdd = false;
+				cout << " " << iter->from << " in Union";
 			}
 			else if(vset->find(iter->to) != vset->end()) { // One in Disjoint Set
 				if (target != nullptr) { // Two in Another Disjoint Set
@@ -161,19 +165,22 @@ bool Kruskal(Graph* graph, ostream* os)
 					result[iter->from].insert({ iter->to, iter->weight });
 					result[iter->to].insert({ iter->from, iter->weight });
 					cost += iter->weight;
-					Unioned = 0;
-					continue;
+					Unioned = -1;
+					cout << " : Union Accept" << endl;
+					break;
 				}
 				Unioned = iter->from;
 				target = vset;
 				needToAdd = false;
+				cout << " " << iter->to << " in Union";
 			}
 		}
-		if (Unioned && target != nullptr) {
+		if (Unioned != -1 && target != nullptr) {
 			target->insert(Unioned);
 			result[iter->from].insert({ iter->to, iter->weight });
 			result[iter->to].insert({ iter->from, iter->weight });
 			cost += iter->weight;
+			cout << " : Non-Union Accept" << endl;
 		}
 		//If Vertices are NEW
 		if (needToAdd) {
@@ -183,6 +190,7 @@ bool Kruskal(Graph* graph, ostream* os)
 			result[iter->to].insert({ iter->from, iter->weight });
 			cost += iter->weight;
 			sets.push_back(s);
+			cout << " : New Disjoint Set" << endl;
 		}
 	}
 
