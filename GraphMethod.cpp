@@ -79,7 +79,6 @@ bool DFS(Graph* graph, int vertex, ostream* os)
 	stack<int> st; // Waiting Stack
 	st.push(vertex);
 	vector<bool> s(graph->getSize()); //Visited Vector
-	s[vertex] = true;
 
 	while (true) {
 		int v = st.top();
