@@ -86,8 +86,9 @@ void Manager::run(const char* command_txt){
 		}
 		else if (cuts[0] == "FLOYD") result = 800 * mFLOYD();
 		else if (cuts[0] == "EXIT") {
-			fout << "=====EXIT=====" << endl;
+			fout << "===== EXIT =====" << endl;
 			fout << "Success" << endl;
+			fout << "================" << endl;
 			fout.close();
 			exit(0);
 		}
