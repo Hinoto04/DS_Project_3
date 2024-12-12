@@ -178,7 +178,7 @@ bool Manager::mDFS_R(int vertex)
 
 bool Manager::mDIJKSTRA(int vertex)
 {
-	return 1;
+	return Dijkstra(graph, vertex, &fout);
 }
 
 bool Manager::mKRUSKAL()

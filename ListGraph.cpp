@@ -56,7 +56,7 @@ bool ListGraph::printLog(ostream* os) {
 		}
 		*os << endl;
 	}
-	*os << "==================" << endl;
+	*os << "=================" << endl;
 	return 0;
 }
 

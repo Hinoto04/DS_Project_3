@@ -215,17 +215,18 @@ bool Kruskal(Graph* graph, ostream* os)
 
 bool Dijkstra(Graph* graph, int vertex, ostream* os)
 {
-	int* length = new int[graph->getSize()];
-	int* parent = new int[graph->getSize()];
-	bool* visited = new bool[graph->getSize()];
+	vector<int> length(graph->getSize());
+	vector<int> parent(graph->getSize());
+	vector<int> visited(graph->getSize());
 	priority_queue<pair<int, int>> pq;
 	for (int i = 0; i < graph->getSize(); i++) {
 		length[i] = MAX;
 		parent[i] = -1;
-		visited = false;
+		visited[i] = false;
 	}
 
 	pq.push({ 0, vertex });
+	length[vertex] = 0;
 
 	while (!pq.empty()) {
 		// Get Now Node and Pop
@@ -236,18 +237,46 @@ bool Dijkstra(Graph* graph, int vertex, ostream* os)
 		map<int, int> adj;
 		graph->getAdjacentEdges(now, &adj);
 		for (auto iter = adj.begin(); iter != adj.end(); iter++) {
+			if (visited[iter->first]) continue;
 			int total = cost + iter->second;
-			if (total < length[iter->second]) {
-				length[iter->second] = total;
-				pq.push({ -total, iter->second });
+			if (total < length[iter->first]) {
+				length[iter->first] = total;
+				parent[iter->first] = now;
+				pq.push({ -total, iter->first });
 			}
 		}
+
+		visited[now] = true;
 	}
 
+	*os << "===== DIJKSTRA =====" << endl;
+	*os << "startvertex: " << vertex << endl;
+	for (int i = 0; i < graph->getSize(); i++) {
+		if (i == vertex) continue;
+		*os << "[" << i << "] ";
+		if (length[i] == MAX) {
+			*os << "x" << endl;
+		}
+		else {
+			stack<int> path;
+			int now = i;
+			while (now != vertex) {
+				path.push(now);
+				now = parent[now];
+			}
+			int temp;
+			while (true) {
+				*os << path.top();
+				path.pop();
+				if (path.empty()) break;
+				*os << " -> ";
+			}
+			*os << " (" << length[i] << ")" << endl;
+		}
+	}
+	*os << "====================" << endl;
 
 	// Memory Save
-	delete[] parent;
-	delete[] length;
 	return 0;
 }
 
