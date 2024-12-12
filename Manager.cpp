@@ -178,6 +178,15 @@ bool Manager::mDFS_R(int vertex)
 
 bool Manager::mDIJKSTRA(int vertex)
 {
+	if (graph->getSize() < vertex) return 1; // vertex does not exist
+	vector<Edge> v;
+	graph->getAllEdges(&v);
+	for (auto iter = v.begin(); iter != v.end(); iter++) {
+		if (iter->weight < 0) { // Negative Weight Check
+			return 1;
+		}
+	}
+
 	return Dijkstra(graph, vertex, &fout);
 }
 
@@ -189,12 +198,13 @@ bool Manager::mKRUSKAL()
 
 bool Manager::mBELLMANFORD(int s_vertex, int e_vertex)
 {
-	return 1;
+	if (graph->getSize() < s_vertex || graph->getSize() < e_vertex) return 1; // vertex does not exist
+	return Bellmanford(graph, s_vertex, e_vertex, &fout);
 }
 
 bool Manager::mFLOYD()
 {
-	return 1;
+	return FLOYD(graph, &fout);
 }
 
 void Manager::printErrorCode(int n)
