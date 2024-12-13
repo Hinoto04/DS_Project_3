@@ -58,7 +58,7 @@ void Manager::run(const char* command_txt){
 			if (cuts.size() != 2) result = 100;
 			else {
 				char temp[128];
-				strcpy(temp, cuts[1].c_str());
+				strcpy_s(temp, cuts[1].c_str());
 				result = 100 * LOAD(temp);
 			}
 		}

@@ -145,17 +145,25 @@ bool Kruskal(Graph* graph, ostream* os)
 	int cost = 0;
 
 	for (auto iter = edges.begin(); iter != edges.end(); iter++) {
-		cout << iter->from << " " << iter->to << endl;
-		cout << find_parent(parent, iter->from) << " " << find_parent(parent, iter->to) << endl;
+		//cout << iter->from << " " << iter->to << endl;
+		//cout << find_parent(parent, iter->from) << " " << find_parent(parent, iter->to) << endl;
 		if (find_parent(parent, iter->from) != find_parent(parent, iter->to)) {
 			union_parent(parent, iter->from, iter->to);
 			result[iter->from].insert({ iter->to, iter->weight });
 			result[iter->to].insert({ iter->from, iter->weight });
 			cost += iter->weight;
-			cout << " Unioned" << endl;
+			//cout << " Unioned" << endl;
 		}
-		else {
-			cout << " Rejected" << endl;
+		//else {
+		//	cout << " Rejected" << endl;
+		//}
+	}
+
+	bool check = false;
+	for (int i = 0; i < graph->getSize(); i++) {
+		if (parent[i] == i) {
+			if (check) return 1; // Two Different Parent -> Not Connected!!!
+			check = true;
 		}
 	}
 
