@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="command.txt" />
+    <Text Include="disjoinset.txt" />
     <Text Include="loadfileM.txt" />
     <Text Include="loadfile.txt" />
     <Text Include="log.txt" />

@@ -64,5 +64,6 @@
     <Text Include="command.txt" />
     <Text Include="loadfile.txt" />
     <Text Include="log.txt" />
+    <Text Include="disjoinset.txt" />
   </ItemGroup>
 </Project>
