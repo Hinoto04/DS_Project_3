@@ -117,6 +117,19 @@ bool DFS_R(Graph* graph, vector<bool>* visit, int vertex, ostream* os)
 	return 0;
 }
 
+int find_parent(vector<int>& parent, int now) {
+	if (parent[now] != -1) {
+		return find_parent(parent, parent[now]);
+	}
+}
+
+void union_parent(vector<int>& parent, int a, int b) {
+	int pa = find_parent(parent, a);
+	int pb = find_parent(parent, b);
+	if (a < b) parent[b] = a;
+	else parent[a] = b;
+}
+
 bool Kruskal(Graph* graph, ostream* os)
 {
 	// Sort Edges with Weight
@@ -124,87 +137,101 @@ bool Kruskal(Graph* graph, ostream* os)
 	graph->getAllEdges(&edges);
 	quickSort(edges, 0, edges.size() - 1);
 
-	// Add Edges to Result
-	vector<set<int>> sets;
-	map<int, int>* result = new map<int, int>[graph->getSize()];
+	//// Add Edges to Result
+	//vector<set<int>> sets;
+	//map<int, int>* result = new map<int, int>[graph->getSize()];
+	//int cost = 0;
+
+	//for (auto iter = edges.begin(); iter != edges.end(); iter++) {
+	//	bool needToAdd = true;
+	//	int Unioned = -1;
+	//	set<int>* target = nullptr;
+	//	cout << "check : " << iter->from << " --" << iter->weight << "-> " << iter->to;
+	//	for (int i = 0; i < sets.size(); i++) {
+	//		set<int>* vset = &sets[i];
+
+	//		// Two in Same Disjoin Set -> Cycle
+	//		if (vset->find(iter->from) != vset->end() && \
+	//			vset->find(iter->to) != vset->end()) { 
+	//			needToAdd = false;
+	//			cout << " : Reject" << endl;
+	//			break;
+	//		}
+	//		if (vset->find(iter->from) != vset->end()) { // One in Disjoint Set
+	//			if (target != nullptr) { // Two in Another Disjoint Set
+	//				target->insert(vset->begin(), vset->end());
+	//				sets.erase(next(sets.begin(), i));
+	//				result[iter->from].insert({ iter->to, iter->weight });
+	//				result[iter->to].insert({ iter->from, iter->weight });
+	//				cost += iter->weight;
+	//				Unioned = -1;
+	//				cout << " : Union Accept" << endl;
+	//				break;
+	//			}
+	//			Unioned = iter->to;
+	//			target = vset;
+	//			needToAdd = false;
+	//			cout << " " << iter->from << " in Union";
+	//		}
+	//		else if(vset->find(iter->to) != vset->end()) { // One in Disjoint Set
+	//			if (target != nullptr) { // Two in Another Disjoint Set
+	//				target->insert(vset->begin(), vset->end());
+	//				sets.erase(next(sets.begin(), i));
+	//				result[iter->from].insert({ iter->to, iter->weight });
+	//				result[iter->to].insert({ iter->from, iter->weight });
+	//				cost += iter->weight;
+	//				Unioned = -1;
+	//				cout << " : Union Accept" << endl;
+	//				break;
+	//			}
+	//			Unioned = iter->from;
+	//			target = vset;
+	//			needToAdd = false;
+	//			cout << " " << iter->to << " in Union";
+	//		}
+	//	}
+	//	if (Unioned != -1 && target != nullptr) {
+	//		target->insert(Unioned);
+	//		result[iter->from].insert({ iter->to, iter->weight });
+	//		result[iter->to].insert({ iter->from, iter->weight });
+	//		cost += iter->weight;
+	//		cout << " : Non-Union Accept" << endl;
+	//	}
+	//	//If Vertices are NEW
+	//	if (needToAdd) {
+	//		set<int> s;
+	//		s.insert({ iter->from, iter->to });
+	//		result[iter->from].insert({ iter->to, iter->weight });
+	//		result[iter->to].insert({ iter->from, iter->weight });
+	//		cost += iter->weight;
+	//		sets.push_back(s);
+	//		cout << " : New Disjoint Set" << endl;
+	//	}
+	//}
+
+	//// Disjoin Set Count > 1 => MST is not exist
+	//if (sets.size() != 1) {
+	//	return 1;
+	//}
+
+	//// If Any Dis-Connected Alone Vertex Exist => MST is not exist
+	//for (int i = 0; i < graph->getSize(); i++) {
+	//	if (result[i].size() == 0) {
+	//		return 1;
+	//	}
+	//}
+
+	// Disjoint set implement with Tree
+	map<int, int>* result;
+	vector<int> parent(graph->getSize(), -1);
 	int cost = 0;
 
 	for (auto iter = edges.begin(); iter != edges.end(); iter++) {
-		bool needToAdd = true;
-		int Unioned = -1;
-		set<int>* target = nullptr;
-		cout << "check : " << iter->from << " --" << iter->weight << "-> " << iter->to;
-		for (int i = 0; i < sets.size(); i++) {
-			set<int>* vset = &sets[i];
-
-			// Two in Same Disjoin Set -> Cycle
-			if (vset->find(iter->from) != vset->end() && \
-				vset->find(iter->to) != vset->end()) { 
-				needToAdd = false;
-				cout << " : Reject" << endl;
-				break;
-			}
-			if (vset->find(iter->from) != vset->end()) { // One in Disjoint Set
-				if (target != nullptr) { // Two in Another Disjoint Set
-					target->insert(vset->begin(), vset->end());
-					sets.erase(next(sets.begin(), i));
-					result[iter->from].insert({ iter->to, iter->weight });
-					result[iter->to].insert({ iter->from, iter->weight });
-					cost += iter->weight;
-					Unioned = -1;
-					cout << " : Union Accept" << endl;
-					break;
-				}
-				Unioned = iter->to;
-				target = vset;
-				needToAdd = false;
-				cout << " " << iter->from << " in Union";
-			}
-			else if(vset->find(iter->to) != vset->end()) { // One in Disjoint Set
-				if (target != nullptr) { // Two in Another Disjoint Set
-					target->insert(vset->begin(), vset->end());
-					sets.erase(next(sets.begin(), i));
-					result[iter->from].insert({ iter->to, iter->weight });
-					result[iter->to].insert({ iter->from, iter->weight });
-					cost += iter->weight;
-					Unioned = -1;
-					cout << " : Union Accept" << endl;
-					break;
-				}
-				Unioned = iter->from;
-				target = vset;
-				needToAdd = false;
-				cout << " " << iter->to << " in Union";
-			}
-		}
-		if (Unioned != -1 && target != nullptr) {
-			target->insert(Unioned);
+		if (find_parent(parent, iter->from) != find_parent(parent, iter->to)) {
+			union_parent(parent, iter->from, iter->to);
 			result[iter->from].insert({ iter->to, iter->weight });
 			result[iter->to].insert({ iter->from, iter->weight });
 			cost += iter->weight;
-			cout << " : Non-Union Accept" << endl;
-		}
-		//If Vertices are NEW
-		if (needToAdd) {
-			set<int> s;
-			s.insert({ iter->from, iter->to });
-			result[iter->from].insert({ iter->to, iter->weight });
-			result[iter->to].insert({ iter->from, iter->weight });
-			cost += iter->weight;
-			sets.push_back(s);
-			cout << " : New Disjoint Set" << endl;
-		}
-	}
-
-	// Disjoin Set Count > 1 => MST is not exist
-	if (sets.size() != 1) {
-		return 1;
-	}
-
-	// If Any Dis-Connected Alone Vertex Exist => MST is not exist
-	for (int i = 0; i < graph->getSize(); i++) {
-		if (result[i].size() == 0) {
-			return 1;
 		}
 	}
 
