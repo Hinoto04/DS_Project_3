@@ -127,8 +127,8 @@ int find_parent(vector<int>& parent, int now) {
 void union_parent(vector<int>& parent, int a, int b) {
 	int pa = find_parent(parent, a);
 	int pb = find_parent(parent, b);
-	if (a < b) parent[b] = a;
-	else parent[a] = b;
+	if (pa < pb) parent[b] = pa;
+	else parent[a] = pb;
 }
 
 bool Kruskal(Graph* graph, ostream* os)
@@ -145,7 +145,7 @@ bool Kruskal(Graph* graph, ostream* os)
 	int cost = 0;
 
 	for (auto iter = edges.begin(); iter != edges.end(); iter++) {
-		cout << iter->to << " " << iter->weight << endl;
+		cout << iter->to << " " << iter->to << endl;
 		cout << find_parent(parent, iter->from) << " " << find_parent(parent, iter->to) << endl;
 		if (find_parent(parent, iter->from) != find_parent(parent, iter->to)) {
 			union_parent(parent, iter->from, iter->to);
