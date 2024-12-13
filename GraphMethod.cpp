@@ -143,12 +143,16 @@ bool Kruskal(Graph* graph, ostream* os)
 	int cost = 0;
 
 	for (auto iter = edges.begin(); iter != edges.end(); iter++) {
+		cout << iter->to << " " << iter->weight;
 		if (find_parent(parent, iter->from) != find_parent(parent, iter->to)) {
 			union_parent(parent, iter->from, iter->to);
 			result[iter->from].insert({ iter->to, iter->weight });
 			result[iter->to].insert({ iter->from, iter->weight });
 			cost += iter->weight;
-			cout << iter->to << " " << iter->weight << " Unioned" << endl;
+			cout << " Unioned" << endl;
+		}
+		else {
+			cout << " Rejected" << endl;
 		}
 	}
 
