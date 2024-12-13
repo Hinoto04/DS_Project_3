@@ -121,6 +121,7 @@ int find_parent(vector<int>& parent, int now) {
 	if (parent[now] != now) {
 		return find_parent(parent, parent[now]);
 	}
+	return now;
 }
 
 void union_parent(vector<int>& parent, int a, int b) {
