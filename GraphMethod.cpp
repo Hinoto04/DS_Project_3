@@ -145,7 +145,7 @@ bool Kruskal(Graph* graph, ostream* os)
 	int cost = 0;
 
 	for (auto iter = edges.begin(); iter != edges.end(); iter++) {
-		cout << iter->to << " " << iter->to << endl;
+		cout << iter->from << " " << iter->to << endl;
 		cout << find_parent(parent, iter->from) << " " << find_parent(parent, iter->to) << endl;
 		if (find_parent(parent, iter->from) != find_parent(parent, iter->to)) {
 			union_parent(parent, iter->from, iter->to);
