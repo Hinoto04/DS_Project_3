@@ -118,7 +118,7 @@ bool DFS_R(Graph* graph, vector<bool>* visit, int vertex, ostream* os)
 }
 
 int find_parent(vector<int>& parent, int now) {
-	if (parent[now] != -1) {
+	if (parent[now] != now) {
 		return find_parent(parent, parent[now]);
 	}
 }
@@ -139,7 +139,7 @@ bool Kruskal(Graph* graph, ostream* os)
 
 	// Disjoint set implement with Tree
 	map<int, int>* result = new map<int, int>[graph->getSize()];
-	vector<int> parent(graph->getSize());
+	vector<int> parent(graph->getSize(), -1);
 	for (int i = 0; i < graph->getSize(); i++) parent[i] = i;
 	int cost = 0;
 
