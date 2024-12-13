@@ -222,7 +222,7 @@ bool Kruskal(Graph* graph, ostream* os)
 	//}
 
 	// Disjoint set implement with Tree
-	map<int, int>* result;
+	map<int, int>* result = new map<int, int>[graph->getSize()];
 	vector<int> parent(graph->getSize(), -1);
 	int cost = 0;
 
