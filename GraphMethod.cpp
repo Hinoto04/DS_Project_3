@@ -127,8 +127,8 @@ int find_parent(vector<int>& parent, int now) {
 void union_parent(vector<int>& parent, int a, int b) {
 	int pa = find_parent(parent, a);
 	int pb = find_parent(parent, b);
-	if (pa < pb) parent[b] = pa;
-	else parent[a] = pb;
+	if (pa < pb) parent[pb] = pa;
+	else parent[pa] = pb;
 }
 
 bool Kruskal(Graph* graph, ostream* os)
