@@ -171,7 +171,7 @@ bool Manager::mDFS_R(int vertex)
 	fout << "===== DFS_R =====" << endl;
 	fout << "startVertex: " << vertex << endl;
 	if (graph->getSize() < vertex) return 1; // vertex does not exist
-	vector<bool> visit = vector<bool>(graph->getSize()); // Visited Vector
+	vector<bool> visit(graph->getSize(), false); // Visited Vector
 	int result = DFS_R(graph, &visit, vertex, &fout);
 	fout << endl << "=================" << endl;
 	return result;
