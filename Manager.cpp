@@ -78,11 +78,11 @@ void Manager::run(const char* command_txt){
 		else if (cuts[0] == "KRUSKAL") result = 600 * mKRUSKAL();
 		else if (cuts[0] == "DIJKSTRA") {
 			if (cuts.size() != 2) result = 700;
-			else result = 600 * mDIJKSTRA(stoi(cuts[1]));
+			else result = 700 * mDIJKSTRA(stoi(cuts[1]));
 		}
 		else if (cuts[0] == "BELLMANFORD") {
 			if (cuts.size() != 3) result = 800;
-			else result = 700 * mBELLMANFORD(stoi(cuts[1]), stoi(cuts[2]));
+			else result = 800 * mBELLMANFORD(stoi(cuts[1]), stoi(cuts[2]));
 		}
 		else if (cuts[0] == "FLOYD") result = 900 * mFLOYD();
 		else if (cuts[0] == "EXIT") {
